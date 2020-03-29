@@ -1,11 +1,10 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_file
 from twilio.twiml.voice_response import VoiceResponse, Gather
-import os
 
 app = Flask(__name__)
 
 
-@app.route("/voice", methods=['GET', 'POST'])
+@app.route("/voice", methods=['POST'])
 def voice():
     """Respond to incoming phone calls and mention the caller's city"""
     intro = False
@@ -33,9 +32,10 @@ def voice():
             intro = True
             resp.play('speeches/redospeech.mp3')
 
-    # Read a message aloud to the caller
+    # Read intro message aloud to the caller
     if not intro:
         resp.play('speeches/introspeech.mp3')
+
     # Start our <Gather> verb
     gather = Gather(num_digits=1)
     gather.play('speeches/gatherspeech.mp3')
@@ -44,14 +44,11 @@ def voice():
     # If the user doesn't select an option, redirect them into a loop
     resp.redirect('/voice')
 
-    # Play an audio file for the caller
-    #resp.play('https://demo.twilio.com/docs/classic.mp3')
     return str(resp) # Dummy return statement
 
-'''@app.route('/speeches/')
-def serve_static(filename):
-    root_dir = os.path.dirname(os.getcwd())
-    return send_from_directory(os.path.join(root_dir, 'speeches'), filename)'''
+@app.route("/speeches/<path:text>", methods=['GET'])
+def serve_redospeech(text):
+    return send_file("speeches/" + text, mimetype='audio/mpeg', as_attachment=True)
 
 def addNumber(number, state):
     return

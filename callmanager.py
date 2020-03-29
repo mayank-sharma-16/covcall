@@ -19,7 +19,21 @@ def send_message(number, text):
              to=number
          )
 
+def mass_call(text, state):
+    '''text is a string. state is a string.'''
+    generate_call_message(text)
+    '''Mayank this is what you need to edit.
+    mass_call(text) is the function that calls all the numbers in the database from
+    the inputted state and reads the text aloud to them. generate_call_message(text) will set up
+    an xml file on the backend with the text that you input (you don't need understand this).
+    The make_call(number) function will call the number and read the text aloud to them. All you
+    need to do below this comment is add a for loop that iterates through the database,
+    finds everyone belonging to the state, and then calls them using make_call(number).
+    Then, you need can call mass_call whenever you want from your own scripts.
+    '''
+
 def generate_call_message(text):
+    '''text is a string.'''
     f = open("static/covcall.xml", "wb")
     top = Element('Response')
     child = SubElement(top, 'Say', {'voice': 'alice'})
@@ -28,6 +42,7 @@ def generate_call_message(text):
     f.write(tostring(top))
 
 def make_call(number):
+    '''number is a string. See the from_ parameter below for an example of the format.'''
     call = client.calls.create(
                         url='http://0c962c1f.ngrok.io/static/covcall.xml',
                         to=number,

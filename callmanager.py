@@ -2,6 +2,8 @@
 from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+import twitter_gov_script as tgs
+import time
 import os
 
 # Your Account Sid and Auth Token from twilio.com/user/account
@@ -19,9 +21,15 @@ def send_message(number, text):
              to=number
          )
 
-def mass_call(text, state):
+def mass_call():
     '''text is a string. state is a string.'''
-    generate_call_message(text)
+    tgs.refresh_tweets()
+
+    for row in tgs.get_call_list():
+        generate_call_message(row[2])
+        make_call(row[0])
+        time.sleep(2)
+
     '''Mayank this is what you need to edit.
     mass_call(text) is the function that calls all the numbers in the database from
     the inputted state and reads the text aloud to them. generate_call_message(text) will set up
@@ -31,6 +39,8 @@ def mass_call(text, state):
     finds everyone belonging to the state, and then calls them using make_call(number).
     Then, you need can call mass_call whenever you want from your own scripts.
     '''
+
+
 
 def generate_call_message(text):
     '''text is a string.'''

@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file
 from twilio.twiml.voice_response import VoiceResponse, Gather
 from callmanager import send_message
+import twitter_gov_script as tgs
 
 app = Flask(__name__)
 
@@ -61,11 +62,13 @@ def serve_redospeech(text):
 def addNumber(number, state):
     '''Mayank to do'''
     '''This function needs to store number and state as strings in the database'''
+    tgs.add_user(state, number)
     return
 
 def removeNumber(number, state):
     '''Mayank to do'''
     '''This function needs to remove number and state from the database'''
+    tgs.remove_user(phone_number)
     return
 
 if __name__ == "__main__":

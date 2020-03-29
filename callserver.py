@@ -59,9 +59,13 @@ def serve_redospeech(text):
         return send_file("static/" + text, mimetype='audio/mpeg', as_attachment=True)
 
 def addNumber(number, state):
+    '''Mayank to do'''
+    '''This function needs to store number and state as strings in the database'''
     return
 
 def removeNumber(number, state):
+    '''Mayank to do'''
+    '''This function needs to remove number and state from the database'''
     return
 
 if __name__ == "__main__":
